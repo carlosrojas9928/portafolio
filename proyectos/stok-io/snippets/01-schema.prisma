@@ -1,0 +1,74 @@
+// backend/prisma/schema.prisma (extracto)
+// Multi-negocio: todo cuelga de Business y los usuarios son OWNER o EMPLOYEE.
+
+enum Role {
+  OWNER    // dueño: gestiona equipo y configuración
+  EMPLOYEE // empleado: opera el inventario
+}
+
+enum MovementType {
+  IN  // entrada: suma stock
+  OUT // salida: resta stock
+}
+
+model Business {
+  id         String     @id @default(cuid())
+  name       String
+  currency   String     @default("COP")
+  users      User[]
+  products   Product[]
+  categories Category[]
+}
+
+model User {
+  id           String     @id @default(cuid())
+  name         String
+  email        String     @unique
+  passwordHash String
+  role         Role       @default(OWNER)
+  businessId   String
+  business     Business   @relation(fields: [businessId], references: [id])
+  movements    Movement[]
+
+  @@index([businessId])
+}
+
+model Category {
+  id         String    @id @default(cuid())
+  name       String
+  businessId String
+  business   Business  @relation(fields: [businessId], references: [id])
+  products   Product[]
+
+  @@unique([businessId, name]) // sin categorías repetidas dentro de un negocio
+}
+
+model Product {
+  id         String     @id @default(cuid())
+  name       String
+  price      Decimal    @db.Decimal(12, 2)
+  stock      Int        @default(0)
+  minStock   Int        @default(0) // stock <= minStock => alerta naranja
+  location   String?
+  categoryId String?
+  category   Category?  @relation(fields: [categoryId], references: [id])
+  businessId String
+  business   Business   @relation(fields: [businessId], references: [id])
+  movements  Movement[]
+
+  @@index([businessId])
+}
+
+model Movement {
+  id        String       @id @default(cuid())
+  type      MovementType
+  quantity  Int
+  reason    String?
+  date      DateTime     @default(now())
+  productId String
+  product   Product      @relation(fields: [productId], references: [id])
+  userId    String       // quién registró el movimiento
+  user      User         @relation(fields: [userId], references: [id])
+
+  @@index([productId])
+}

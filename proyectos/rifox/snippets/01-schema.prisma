@@ -1,0 +1,61 @@
+// backend/prisma/schema.prisma (extracto)
+// Modelo central de Rifox: Rifa -> Números -> Pago, y un Sorteo 1:1 por rifa.
+
+enum NumberStatus {
+  AVAILABLE // libre para comprar
+  RESERVED  // apartado, esperando confirmación de pago
+  PAID      // pago confirmado
+}
+
+enum PaymentStatus {
+  PENDING   // comprobante subido, esperando revisión
+  APPROVED  // el organizador confirmó el pago
+  REJECTED  // el organizador rechazó el comprobante
+}
+
+model Raffle {
+  id             String       @id @default(cuid())
+  slug           String       @unique
+  title          String
+  pricePerNumber Decimal      @db.Decimal(10, 2)
+  totalNumbers   Int
+  status         RaffleStatus @default(DRAFT)
+  drawDate       DateTime
+
+  organizerId    String
+  organizer      User         @relation("OrganizerRaffles", fields: [organizerId], references: [id], onDelete: Cascade)
+  numbers        RaffleNumber[]
+  draw           Draw?
+
+  @@index([organizerId])
+  @@map("raffles")
+}
+
+model RaffleNumber {
+  id         String       @id @default(cuid())
+  number     Int
+  status     NumberStatus @default(AVAILABLE)
+  reservedAt DateTime?
+
+  raffleId   String
+  raffle     Raffle       @relation(fields: [raffleId], references: [id], onDelete: Cascade)
+  buyerId    String?
+  buyer      User?        @relation("BuyerNumbers", fields: [buyerId], references: [id])
+  paymentId  String?
+  payment    Payment?     @relation(fields: [paymentId], references: [id])
+
+  @@unique([raffleId, number]) // un número no se repite dentro de la misma rifa
+  @@index([raffleId, status])
+  @@map("raffle_numbers")
+}
+
+model Draw {
+  id            String   @id @default(cuid())
+  winningNumber Int
+  publicSeed    String   // ej. resultado de la lotería oficial
+  seedSource    String   // ej. "Lotería de Bogotá - 27/08/2026"
+  raffleId      String   @unique
+  raffle        Raffle   @relation(fields: [raffleId], references: [id], onDelete: Cascade)
+
+  @@map("draws")
+}
