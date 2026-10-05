@@ -15,8 +15,8 @@ Todos comparten la misma base técnica y de estilo (Next.js + NestJS + Prisma + 
 | # | Proyecto | Descripción | Estado | Stack | Repo | Demo |
 |---|----------|-------------|--------|-------|------|------|
 | 1 | **[KNORIX](proyectos/knorix/README.md)** | Plataforma SaaS de cursos online — el tutor se queda con el 100% de la venta, paga suscripción fija | ✅ En producción | Next.js · NestJS · Prisma · PostgreSQL · Stripe | _pendiente_ | [demo](https://knorix-ten.vercel.app) |
-| 2 | **[Rifox](proyectos/rifox/README.md)** | Rifas y sorteos digitales, resolución verificable con lotería oficial como semilla | 📋 Planificado | Next.js · NestJS · Prisma · PostgreSQL | — | — |
-| 3 | **[Stok.io](proyectos/stok-io/README.md)** | Inventario de productos para negocios pequeños, con alertas de stock y reportes | 📋 Planificado | Next.js · NestJS · Prisma · PostgreSQL | — | — |
+| 2 | **[Rifox](proyectos/rifox/README.md)** | Rifas y sorteos digitales, resolución verificable con lotería oficial como semilla | 🚧 En construcción | Next.js · NestJS · Prisma · PostgreSQL | — | — |
+| 3 | **[Stok.io](proyectos/stok-io/README.md)** | Inventario de productos para negocios pequeños, con alertas de stock y reportes | 🚧 En construcción | Next.js · NestJS · Prisma · PostgreSQL | — | — |
 | 4 | **[Facturación freelance](proyectos/facturacion-freelance/README.md)** | Cotizaciones, facturas y cobro para freelancers, con recordatorios automáticos | 📋 Planificado | Next.js · NestJS · Prisma · PostgreSQL | — | — |
 | 5 | **[Turno.app](proyectos/turno-app/README.md)** | Motor de reservas/citas genérico (canchas, salas, consultorios) | 📋 Planificado | Next.js · NestJS · Prisma · PostgreSQL | — | — |
 | 6 | **[Blok.site](proyectos/blok-site/README.md)** | Creador de landing pages por bloques, con editor visual y publicación por subdominio | 📋 Planificado | Next.js · NestJS · Prisma · PostgreSQL | — | — |
